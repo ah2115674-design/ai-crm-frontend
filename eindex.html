@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zync CRM — WhatsApp AI Sales Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0d14;
+    --bg2: #111520;
+    --bg3: #181d2e;
+    --bg4: #1e2438;
+    --surface: #232940;
+    --surface2: #2a3050;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text: #f0f2ff;
+    --text2: #8b92b8;
+    --text3: #555e80;
+    --accent: #25d366;
+    --accent2: #1ba34e;
+    --accent-glow: rgba(37,211,102,0.15);
+    --blue: #3b82f6;
+    --blue2: rgba(59,130,246,0.12);
+    --amber: #f59e0b;
+    --amber2: rgba(245,158,11,0.12);
+    --red: #ef4444;
+    --red2: rgba(239,68,68,0.1);
+    --purple: #a855f7;
+    --purple2: rgba(168,85,247,0.1);
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --radius: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 22px;
+    --sidebar: 240px;
+    --topbar: 60px;
+    --trans: 0.2s ease;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    font-size: 14px;
+  }
+
+  /* ── AUTH SCREEN ── */
+  #auth-screen {
+    position: fixed; inset: 0;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  .auth-card {
+    width: 420px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-xl);
+    padding: 44px 40px;
+  }
+  .auth-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+  .auth-logo-icon {
+    width: 40px; height: 40px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .auth-logo-text {
+    font-family: var(--font-head);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .auth-logo-text span { color: var(--accent); }
+  .auth-title {
+    font-family: var(--font-head);
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+  .auth-sub {
+    color: var(--text2);
+    font-size: 13px;
+    margin-bottom: 28px;
+  }
+  .auth-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--bg3);
+    border-radius: var(--radius);
+    padding: 4px;
+    margin-bottom: 24px;
+  }
+  .auth-tab {
+    flex: 1; text-align: center; padding: 8px;
+    border-radius: 7px; cursor: pointer;
+    font-weight: 500; font-size: 13px;
+    color: var(--text2);
+    transition: var(--trans);
+  }
+  .auth-tab.active {
+    background: var(--surface);
+    color: var(--text);
+  }
+  .form-group { margin-bottom: 14px; }
+  .form-row { display: flex; gap: 12px; }
+  .form-row .form-group { flex: 1; }
+  label { display: block; font-size: 12px; color: var(--text2); margin-bottom: 5px; letter-spacing: 0.3px; }
+  input[type=text], input[type=email], input[type=password], input[type=tel], textarea, select {
+    width: 100%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color var(--trans);
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+  select option { background: var(--bg3); }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 11px 20px;
+    border-radius: var(--radius);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: var(--trans);
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #0a2e18;
+    width: 100%;
+  }
+  .btn-primary:hover { background: #20c45b; }
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border2);
+  }
+  .btn-secondary:hover { background: var(--surface2); }
+  .btn-danger {
+    background: var(--red2);
+    color: var(--red);
+    border: 1px solid rgba(239,68,68,0.2);
+  }
+  .btn-danger:hover { background: rgba(239,68,68,0.18); }
+  .btn-sm { padding: 7px 14px; font-size: 13px; }
+  .btn-icon { padding: 8px; border-radius: var(--radius); }
+
+  .auth-divider {
+    text-align: center; color: var(--text3);
+    font-size: 12px; margin: 14px 0;
+  }
+  .auth-switch {
+    text-align: center; font-size: 13px;
+    color: var(--text2); margin-top: 18px;
+  }
+  .auth-switch a {
+    color: var(--accent); cursor: pointer;
+    text-decoration: none; font-weight: 500;
+  }
+
+  /* ── APP LAYOUT ── */
+  #app { display: none; height: 100vh; flex-direction: row; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: var(--sidebar);
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    flex-shrink: 0;
+  }
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 20px 24px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+  }
+  .logo-icon {
+    width: 34px; height: 34px;
+    background: var(--accent);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .logo-text {
+    font-family: var(--font-head);
+    font-size: 18px; font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .logo-text span { color: var(--accent); }
+  .nav-section {
+    padding: 6px 12px;
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--text3);
+    margin: 10px 0 4px;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 16px;
+    margin: 1px 8px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 13.5px;
+    font-weight: 400;
+    transition: var(--trans);
+  }
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+  .nav-item.active { background: var(--accent-glow); color: var(--accent); }
+  .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .nav-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: #0a2e18;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+  }
+  .sidebar-user {
+    margin-top: auto;
+    border-top: 1px solid var(--border);
+    padding: 16px 16px 0;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .user-avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; color: #fff;
+    flex-shrink: 0;
+  }
+  .user-info .user-name { font-size: 13px; font-weight: 500; }
+  .user-info .user-company { font-size: 11px; color: var(--text3); }
+  .sidebar-logout {
+    margin-left: auto; cursor: pointer;
+    color: var(--text3);
+    transition: color var(--trans);
+  }
+  .sidebar-logout:hover { color: var(--red); }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  .topbar {
+    height: var(--topbar);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 28px;
+    gap: 16px;
+    background: var(--bg);
+    flex-shrink: 0;
+  }
+  .topbar-title {
+    font-family: var(--font-head);
+    font-size: 18px; font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .topbar-actions { margin-left: auto; display: flex; gap: 10px; }
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px;
+  }
+
+  /* ── PAGE VIEWS ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* ── STATS GRID ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .stat-card.green::before { background: var(--accent); }
+  .stat-card.blue::before { background: var(--blue); }
+  .stat-card.amber::before { background: var(--amber); }
+  .stat-card.purple::before { background: var(--purple); }
+  .stat-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; margin-bottom: 14px;
+  }
+  .stat-icon.green { background: var(--accent-glow); }
+  .stat-icon.blue { background: var(--blue2); }
+  .stat-icon.amber { background: var(--amber2); }
+  .stat-icon.purple { background: var(--purple2); }
+  .stat-value {
+    font-family: var(--font-head);
+    font-size: 30px; font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 12px; color: var(--text2); }
+  .stat-delta {
+    position: absolute; top: 20px; right: 20px;
+    font-size: 11px; font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+  .stat-delta.up { background: var(--accent-glow); color: var(--accent); }
+  .stat-delta.down { background: var(--red2); color: var(--red); }
+
+  /* ── GRID LAYOUTS ── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+  }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .card-title {
+    font-family: var(--font-head);
+    font-size: 15px; font-weight: 700;
+  }
+  .card-sub { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  /* ── TABLE ── */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    text-align: left; font-size: 11px;
+    font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--text3);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 12px 14px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ── BADGE ── */
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 600;
+  }
+  .badge-green { background: var(--accent-glow); color: var(--accent); }
+  .badge-blue { background: var(--blue2); color: var(--blue); }
+  .badge-amber { background: var(--amber2); color: var(--amber); }
+  .badge-red { background: var(--red2); color: var(--red); }
+  .badge-purple { background: var(--purple2); color: var(--purple); }
+  .badge-gray { background: rgba(255,255,255,0.06); color: var(--text2); }
+
+  /* ── CHAT PREVIEW ── */
+  .chat-bubble {
+    max-width: 80%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+  .chat-bubble.incoming {
+    background: var(--surface);
+    border-bottom-left-radius: 3px;
+  }
+  .chat-bubble.outgoing {
+    background: #1a5c35;
+    border-bottom-right-radius: 3px;
+    margin-left: auto;
+  }
+  .chat-bubble .chat-time {
+    font-size: 10px; color: var(--text3);
+    margin-top: 4px; text-align: right;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    height: 6px; background: var(--bg3);
+    border-radius: 3px; overflow: hidden;
+    margin-top: 8px;
+  }
+  .progress-fill {
+    height: 100%; border-radius: 3px;
+    transition: width 0.6s ease;
+  }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none; align-items: center; justify-content: center;
+    z-index: 500;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  .modal-title {
+    font-family: var(--font-head);
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  /* ── NOTIFICATION TOAST ── */
+  #toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px;
+    z-index: 9999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(.34,1.56,.64,1);
+    max-width: 340px;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast-icon { font-size: 18px; }
+
+  /* ── WHATSAPP STATUS ── */
+  .wa-status {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600;
+  }
+  .wa-status.connected { background: var(--accent-glow); color: var(--accent); }
+  .wa-status.disconnected { background: var(--red2); color: var(--red); }
+  .wa-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.4 } }
+
+  /* ── ACTIVITY FEED ── */
+  .activity-item {
+    display: flex; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .activity-item:last-child { border-bottom: none; }
+  .activity-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0; margin-top: 5px;
+  }
+  .activity-text { font-size: 13px; }
+  .activity-text strong { color: var(--text); }
+  .activity-time { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+  /* ── PRODUCT CARD ── */
+  .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .product-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    transition: var(--trans);
+  }
+  .product-card:hover { border-color: var(--border2); transform: translateY(-1px); }
+  .product-name { font-family: var(--font-head); font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+  .product-price { font-size: 20px; font-weight: 700; color: var(--accent); margin: 10px 0 6px; }
+  .product-desc { font-size: 12.5px; color: var(--text2); line-height: 1.55; }
+  .product-meta { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .product-meta-item { font-size: 11px; color: var(--text3); }
+  .product-meta-item strong { color: var(--text2); }
+  .product-actions { display: flex; gap: 8px; margin-top: 16px; }
+
+  /* ── SETTINGS ── */
+  .settings-section {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .settings-title {
+    font-family: var(--font-head);
+    font-size: 15px; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .settings-desc { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+  .settings-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 0; border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .settings-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .settings-row label { font-size: 13px; margin: 0; color: var(--text2); }
+
+  /* ── LEADS TABLE ── */
+  .lead-phone { font-weight: 500; color: var(--text); }
+  .lead-msg { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text2); }
+  .lead-ai { max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 12px; color: var(--text3); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center; padding: 60px 20px;
+    color: var(--text2);
+  }
+  .empty-state-icon { font-size: 40px; margin-bottom: 14px; }
+  .empty-state h3 { font-family: var(--font-head); font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .empty-state p { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+
+  /* ── CHART BAR ── */
+  .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 120px; }
+  .bar-group { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .bar { width: 100%; border-radius: 4px 4px 0 0; transition: height 0.6s ease; }
+  .bar-label { font-size: 10px; color: var(--text3); }
+  .bar-value { font-size: 10px; color: var(--text2); }
+
+  /* ── TEST AI PANEL ── */
+  .test-panel {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    margin-top: 20px;
+  }
+  .test-output {
+    min-height: 120px;
+    background: var(--bg);
+    border-radius: var(--radius);
+    padding: 14px;
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.6;
+    margin-top: 14px;
+    border: 1px solid var(--border);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  /* spinner */
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.15);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ AUTH ══════════════ -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-icon">💬</div>
+      <div class="auth-logo-text">Zync<span>AI</span></div>
+    </div>
+    <div class="auth-title" id="auth-title">Welcome back</div>
+    <div class="auth-sub" id="auth-sub">Sign in to your AI sales platform</div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+      <div class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-form">
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" id="login-email" placeholder="you@company.com" value="demo@zyncai.com" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" value="password123" />
+      </div>
+      <button class="btn btn-primary" onclick="doLogin()" style="margin-top:6px">
+        Sign In
+      </button>
+    </div>
+
+    <!-- SIGNUP FORM -->
+    <div id="signup-form" style="display:none">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First name</label>
+          <input type="text" id="signup-fname" placeholder="Ahmed" />
+        </div>
+        <div class="form-group">
+          <label>Last name</label>
+          <input type="text" id="signup-lname" placeholder="Khan" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Company name</label>
+        <input type="text" id="signup-company" placeholder="Acme Traders" />
+      </div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" id="signup-email" placeholder="you@company.com" />
+      </div>
+      <div class="form-group">
+        <label>Phone number</label>
+        <input type="tel" id="signup-phone" placeholder="+92 300 1234567" />
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Min. 8 characters" />
+      </div>
+      <button class="btn btn-primary" onclick="doSignup()" style="margin-top:6px">
+        Create Account
+      </button>
+    </div>
+
+    <div class="auth-switch">
+      <span id="auth-switch-text">Don't have an account? <a onclick="switchAuthTab('signup')">Sign up free</a></span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ APP ══════════════ -->
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">💬</div>
+      <div class="logo-text">Zync<span>AI</span></div>
+    </div>
+
+    <div class="nav-section">Main</div>
+    <div class="nav-item active" onclick="nav('dashboard')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M1 3a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3zm6 0a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V3zm-6 6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9zm6 0a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9z"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" onclick="nav('leads')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/><path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/></svg>
+      Leads
+      <span class="nav-badge" id="nav-leads-count">0</span>
+    </div>
+    <div class="nav-item" onclick="nav('products')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-6.5-3h8.25l1.125-6H3.375L3.875 9z"/></svg>
+      Products
+    </div>
+
+    <div class="nav-section">AI & WhatsApp</div>
+    <div class="nav-item" onclick="nav('whatsapp')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592z"/></svg>
+      WhatsApp Setup
+    </div>
+    <div class="nav-item" onclick="nav('ai-test')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M6 12.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/><path d="M2 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h12z"/></svg>
+      Test AI
+    </div>
+    <div class="nav-item" onclick="nav('settings')">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>
+      Settings
+    </div>
+
+    <div class="sidebar-user">
+      <div class="user-avatar" id="sidebar-avatar">AK</div>
+      <div class="user-info">
+        <div class="user-name" id="sidebar-name">Ahmed Khan</div>
+        <div class="user-company" id="sidebar-company">Acme Traders</div>
+      </div>
+      <div class="sidebar-logout" onclick="doLogout()" title="Logout">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/><path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="topbar-title">Dashboard</div>
+      <div style="margin-left:12px" id="topbar-sub"></div>
+      <div class="topbar-actions" id="topbar-actions"></div>
+    </div>
+    <div class="content">
+
+      <!-- ── DASHBOARD PAGE ── -->
+      <div class="page active" id="page-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card green">
+            <div class="stat-icon green">🎯</div>
+            <div class="stat-value" id="stat-qualified">0</div>
+            <div class="stat-label">Qualified Leads</div>
+            <div class="stat-delta up" id="stat-qualified-delta">+0%</div>
+          </div>
+          <div class="stat-card blue">
+            <div class="stat-icon blue">💬</div>
+            <div class="stat-value" id="stat-inquiries">0</div>
+            <div class="stat-label">Total Inquiries</div>
+            <div class="stat-delta up">+12%</div>
+          </div>
+          <div class="stat-card amber">
+            <div class="stat-icon amber">📈</div>
+            <div class="stat-value" id="stat-conversion">0%</div>
+            <div class="stat-label">Conversion Rate</div>
+            <div class="stat-delta up" id="stat-conv-delta">—</div>
+          </div>
+          <div class="stat-card purple">
+            <div class="stat-icon purple">🛍️</div>
+            <div class="stat-value" id="stat-products">0</div>
+            <div class="stat-label">Active Products</div>
+            <div class="stat-delta up">+2</div>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-bottom:20px">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Lead Activity (Last 7 days)</div>
+                <div class="card-sub">Daily incoming WhatsApp messages</div>
+              </div>
+            </div>
+            <div class="chart-bars" id="leads-chart">
+              <!-- bars rendered by JS -->
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px;justify-content:center">
+              <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)">
+                <div style="width:10px;height:10px;border-radius:2px;background:var(--accent)"></div> Inquiries
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)">
+                <div style="width:10px;height:10px;border-radius:2px;background:var(--blue)"></div> Qualified
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Recent AI Conversations</div>
+            </div>
+            <div id="recent-chats">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Recent Leads</div>
+            <a onclick="nav('leads')" style="font-size:13px;color:var(--accent);cursor:pointer;text-decoration:none">View all →</a>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Inquiry</th>
+                  <th>Status</th>
+                  <th>Time</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-leads-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── LEADS PAGE ── -->
+      <div class="page" id="page-leads">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">All Leads</div>
+              <div class="card-sub">WhatsApp inquiries and AI responses</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:center">
+              <select id="leads-filter" onchange="renderLeads()" style="width:auto;padding:8px 12px">
+                <option value="all">All Statuses</option>
+                <option value="qualified">Qualified</option>
+                <option value="inquiry">Inquiry</option>
+                <option value="cold">Cold</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Phone</th>
+                  <th>Inquiry</th>
+                  <th>AI Reply</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="leads-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PRODUCTS PAGE ── -->
+      <div class="page" id="page-products">
+        <div class="product-grid" id="products-grid"></div>
+        <div class="empty-state" id="products-empty" style="display:none">
+          <div class="empty-state-icon">🛍️</div>
+          <h3>No products yet</h3>
+          <p>Add your first product to start selling via WhatsApp AI</p>
+          <button class="btn btn-primary" style="width:auto;padding:10px 24px" onclick="openProductModal()">Add Product</button>
+        </div>
+      </div>
+
+      <!-- ── WHATSAPP PAGE ── -->
+      <div class="page" id="page-whatsapp">
+        <div class="grid-2">
+          <div>
+            <div class="settings-section">
+              <div class="settings-title">WhatsApp Connection</div>
+              <div class="settings-desc">Connect your Twilio WhatsApp number to receive and reply to customer messages automatically.</div>
+
+              <div class="form-group">
+                <label>WhatsApp Business Number</label>
+                <input type="tel" id="wa-number" placeholder="+1 415 523 8886" />
+              </div>
+              <div class="form-group">
+                <label>Twilio Account SID</label>
+                <input type="text" id="wa-sid" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+              </div>
+              <div class="form-group">
+                <label>Twilio Auth Token</label>
+                <input type="password" id="wa-token" placeholder="••••••••••••••••••••" />
+              </div>
+              <div style="display:flex;gap:10px;margin-top:6px">
+                <button class="btn btn-primary" style="flex:1" onclick="saveWhatsApp()">Save Settings</button>
+                <button class="btn btn-secondary" onclick="testConnection()">Test</button>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="settings-title">AI Persona</div>
+              <div class="settings-desc">Customize how your AI sales assistant introduces itself to customers.</div>
+              <div class="form-group">
+                <label>AI Name</label>
+                <input type="text" id="ai-name" placeholder="e.g. Zara" value="Zara" />
+              </div>
+              <div class="form-group">
+                <label>Greeting message</label>
+                <textarea id="ai-greeting" rows="3" placeholder="Hello! I'm Zara, your AI sales assistant...">Hello! I'm Zara, your dedicated sales assistant. How can I help you today? 😊</textarea>
+              </div>
+              <button class="btn btn-secondary" onclick="showToast('AI persona saved!','✅')" style="width:100%;margin-top:6px">Save Persona</button>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:20px">
+              <div class="card-header">
+                <div class="card-title">Connection Status</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+                <span style="font-size:13px;color:var(--text2)">WhatsApp via Twilio</span>
+                <div class="wa-status" id="wa-connection-status" style="cursor:pointer" onclick="toggleWaStatus()">
+                  <div class="wa-dot"></div> Connected
+                </div>
+              </div>
+              <div style="background:var(--bg3);border-radius:var(--radius);padding:14px">
+                <div style="font-size:11px;color:var(--text3);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px">Webhook URL</div>
+                <div style="font-size:12px;font-family:monospace;color:var(--text2);word-break:break-all" id="webhook-url">https://your-app.onrender.com/api/webhook</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title">Message Preview</div>
+                <div class="card-sub">Simulated WhatsApp conversation</div>
+              </div>
+              <div style="background:#0a1a0f;border-radius:var(--radius);padding:16px">
+                <div class="chat-bubble incoming">
+                  Hi, I'm interested in your products. Do you have cotton fabric in bulk?
+                  <div class="chat-time">10:32 AM</div>
+                </div>
+                <div class="chat-bubble outgoing">
+                  Hello! I'm Zara, your AI sales assistant 😊 Yes, we carry premium cotton fabric in bulk! We have 3 grades available. MOQ is 500 meters. Would you like pricing details?
+                  <div class="chat-time">10:32 AM</div>
+                </div>
+                <div class="chat-bubble incoming">
+                  Yes please, and what's the delivery time?
+                  <div class="chat-time">10:33 AM</div>
+                </div>
+                <div class="chat-bubble outgoing">
+                  Great! Premium grade: $4.50/meter, Standard: $3.20/meter, Economy: $2.10/meter. Delivery is 5–7 business days within Pakistan. Shall I prepare a quote for you?
+                  <div class="chat-time">10:33 AM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── AI TEST PAGE ── -->
+      <div class="page" id="page-ai-test">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Test AI Response</div>
+              <div class="card-sub">Simulate a customer WhatsApp message</div>
+            </div>
+            <div class="form-group">
+              <label>Customer message</label>
+              <textarea id="test-message" rows="4" placeholder="e.g. What products do you sell? Do you offer bulk discounts?"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Customer phone (optional)</label>
+              <input type="tel" id="test-phone" placeholder="+92 300 1234567" />
+            </div>
+            <button class="btn btn-primary" onclick="testAI()" id="test-ai-btn">
+              🤖 Generate AI Response
+            </button>
+            <div class="test-panel" id="test-output-panel" style="display:none">
+              <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">AI Reply</div>
+              <div class="test-output" id="test-output-text"></div>
+              <div style="display:flex;gap:10px;margin-top:14px">
+                <span class="badge badge-green" id="test-status-badge">✓ Qualified</span>
+                <span style="font-size:12px;color:var(--text2)" id="test-matched-products"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Your Product Catalog</div>
+              <div class="card-sub">What the AI knows about your products</div>
+            </div>
+            <div id="ai-test-products"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SETTINGS PAGE ── -->
+      <div class="page" id="page-settings">
+        <div class="settings-section">
+          <div class="settings-title">Profile Settings</div>
+          <div class="settings-desc">Update your account information</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>First name</label>
+              <input type="text" id="set-fname" />
+            </div>
+            <div class="form-group">
+              <label>Last name</label>
+              <input type="text" id="set-lname" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Company</label>
+            <input type="text" id="set-company" />
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="set-email" />
+          </div>
+          <button class="btn btn-primary" style="width:auto;padding:10px 24px" onclick="saveProfile()">Save Profile</button>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-title">Security</div>
+          <div class="settings-desc">Change your password</div>
+          <div class="form-group">
+            <label>Current password</label>
+            <input type="password" placeholder="••••••••" />
+          </div>
+          <div class="form-group">
+            <label>New password</label>
+            <input type="password" placeholder="••••••••" />
+          </div>
+          <button class="btn btn-secondary" style="width:auto" onclick="showToast('Password updated','🔒')">Update Password</button>
+        </div>
+
+        <div class="settings-section">
+          <div class="settings-title">API Configuration</div>
+          <div class="settings-desc">Backend server and API keys</div>
+          <div class="form-group">
+            <label>Backend API URL</label>
+            <input type="text" id="api-url" value="https://your-app.onrender.com" />
+          </div>
+          <div class="form-group">
+            <label>OpenAI API Key</label>
+            <input type="password" placeholder="sk-••••••••••••••••" />
+          </div>
+          <button class="btn btn-secondary" style="width:auto" onclick="showToast('API config saved','⚙️')">Save Configuration</button>
+        </div>
+
+        <div class="settings-section" style="border-color:rgba(239,68,68,0.2)">
+          <div class="settings-title" style="color:var(--red)">Danger Zone</div>
+          <div class="settings-desc">These actions cannot be undone.</div>
+          <div class="settings-row">
+            <div>
+              <div style="font-size:13px;font-weight:500">Delete all leads</div>
+              <div style="font-size:12px;color:var(--text3)">Permanently remove all lead records</div>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="showToast('This would call DELETE /api/leads/all','⚠️')">Delete Leads</button>
+          </div>
+          <div class="settings-row">
+            <div>
+              <div style="font-size:13px;font-weight:500">Delete account</div>
+              <div style="font-size:12px;color:var(--text3)">Permanently delete your account and all data</div>
+            </div>
+            <button class="btn btn-danger btn-sm" onclick="showToast('Account deletion requires backend confirmation','⚠️')">Delete Account</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- Product Modal -->
+<div class="modal-overlay" id="product-modal">
+  <div class="modal">
+    <div class="modal-title" id="product-modal-title">Add Product</div>
+    <div class="form-group">
+      <label>Product name</label>
+      <input type="text" id="prod-name" placeholder="e.g. Premium Cotton Fabric" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Price (per unit)</label>
+        <input type="text" id="prod-price" placeholder="e.g. $4.50/meter" />
+      </div>
+      <div class="form-group">
+        <label>MOQ</label>
+        <input type="text" id="prod-moq" placeholder="e.g. 500 meters" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea id="prod-desc" rows="3" placeholder="Describe the product, grade, specs..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Delivery info</label>
+      <input type="text" id="prod-delivery" placeholder="e.g. 5–7 business days" />
+    </div>
+    <div style="display:flex;gap:10px;margin-top:6px">
+      <button class="btn btn-primary" style="flex:1" onclick="saveProduct()">Save Product</button>
+      <button class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Lead Detail Modal -->
+<div class="modal-overlay" id="lead-modal">
+  <div class="modal">
+    <div class="modal-title">Lead Details</div>
+    <div id="lead-detail-content"></div>
+    <button class="btn btn-secondary" style="width:100%;margin-top:20px" onclick="closeLeadModal()">Close</button>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast">
+  <span id="toast-icon">✅</span>
+  <span id="toast-msg">Saved successfully!</span>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════
+const API_BASE = 'https://your-app.onrender.com'; // update when backend is live
+
+let currentUser = null;
+let currentPage = 'dashboard';
+let editingProductId = null;
+
+let state = {
+  products: [
+    { id: 1, name: 'Premium Cotton Fabric', price: '$4.50/meter', moq: '500 meters', description: '100% pure cotton, Grade A. Available in 40+ colors. Suitable for garment manufacturing and export.', delivery: '5–7 business days', status: 'active' },
+    { id: 2, name: 'Polyester Blend Cloth', price: '$2.80/meter', moq: '300 meters', description: 'Durable polyester-cotton blend. 60/40 ratio. Ideal for uniforms and workwear.', delivery: '3–5 business days', status: 'active' },
+    { id: 3, name: 'Silk Chiffon', price: '$8.20/meter', moq: '100 meters', description: 'Luxury silk chiffon. Ultra-lightweight. Perfect for bridal and formal wear.', delivery: '10–14 business days', status: 'active' },
+  ],
+  leads: [
+    { id: 1, phone: '+92 300 1234567', inquiry: 'Do you have cotton fabric in bulk?', ai_reply: 'Hello! Yes we carry premium cotton fabric in bulk. MOQ is 500 meters at $4.50/meter. Would you like a quote?', status: 'qualified', date: '2026-03-18 10:32' },
+    { id: 2, phone: '+92 321 9876543', inquiry: 'What are your minimum order quantities?', ai_reply: 'Our MOQs vary by product: Cotton Fabric 500m, Polyester Blend 300m, Silk Chiffon 100m. Which product interests you?', status: 'qualified', date: '2026-03-18 09:14' },
+    { id: 3, phone: '+971 50 1234567', inquiry: 'Can you deliver to Dubai?', ai_reply: 'Yes we do export to Dubai! Delivery takes 10–14 days via air freight. Would you like shipping rates?', status: 'qualified', date: '2026-03-17 16:45' },
+    { id: 4, phone: '+92 333 5554444', inquiry: 'Hello', ai_reply: 'Hello! Welcome to our store. I\'m Zara, your AI sales assistant. How can I help you today?', status: 'inquiry', date: '2026-03-17 14:20' },
+    { id: 5, phone: '+92 311 2223333', inquiry: 'what colors available for silk', ai_reply: 'Our Silk Chiffon is available in 18 colors including ivory, champagne, blush, navy and black. Shall I send fabric swatches?', status: 'qualified', date: '2026-03-16 11:00' },
+    { id: 6, phone: '+44 7700 900123', inquiry: 'Price list', ai_reply: 'Here is our current price list: Cotton $4.50/m, Polyester $2.80/m, Silk Chiffon $8.20/m. All prices are per meter FOB Karachi.', status: 'cold', date: '2026-03-15 08:30' },
+  ],
+  waConnected: true,
+};
+
+// ══════════════════════════════════════════════
+//  AUTH
+// ══════════════════════════════════════════════
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0 && tab==='login')||(i===1 && tab==='signup')));
+  document.getElementById('login-form').style.display = tab==='login' ? 'block' : 'none';
+  document.getElementById('signup-form').style.display = tab==='signup' ? 'block' : 'none';
+  document.getElementById('auth-title').textContent = tab==='login' ? 'Welcome back' : 'Create your account';
+  document.getElementById('auth-sub').textContent = tab==='login' ? 'Sign in to your AI sales platform' : 'Start selling smarter with WhatsApp AI';
+  document.getElementById('auth-switch-text').innerHTML = tab==='login'
+    ? "Don't have an account? <a onclick=\"switchAuthTab('signup')\">Sign up free</a>"
+    : "Already have an account? <a onclick=\"switchAuthTab('login')\">Sign in</a>";
+}
+
+function doLogin() {
+  const email = document.getElementById('login-email').value;
+  const pass = document.getElementById('login-password').value;
+  if (!email || !pass) { showToast('Please fill in all fields','⚠️'); return; }
+  // Simulate API: POST /api/login
+  currentUser = { firstName: 'Ahmed', lastName: 'Khan', company: 'Acme Traders', email };
+  enterApp();
+}
+
+function doSignup() {
+  const fname = document.getElementById('signup-fname').value;
+  const lname = document.getElementById('signup-lname').value;
+  const company = document.getElementById('signup-company').value;
+  const email = document.getElementById('signup-email').value;
+  if (!fname||!lname||!company||!email) { showToast('Please fill in all fields','⚠️'); return; }
+  // Simulate API: POST /api/signup
+  currentUser = { firstName: fname, lastName: lname, company, email };
+  enterApp();
+}
+
+function enterApp() {
+  document.getElementById('auth-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+  updateUserUI();
+  renderDashboard();
+  renderLeads();
+  renderProducts();
+  renderAITestProducts();
+  loadSettings();
+  showToast(`Welcome, ${currentUser.firstName}! 🎉`, '');
+}
+
+function doLogout() {
+  currentUser = null;
+  document.getElementById('auth-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function updateUserUI() {
+  const initials = (currentUser.firstName[0]||'') + (currentUser.lastName[0]||'');
+  document.getElementById('sidebar-avatar').textContent = initials.toUpperCase();
+  document.getElementById('sidebar-name').textContent = currentUser.firstName + ' ' + currentUser.lastName;
+  document.getElementById('sidebar-company').textContent = currentUser.company;
+}
+
+// ══════════════════════════════════════════════
+//  NAVIGATION
+// ══════════════════════════════════════════════
+const pageConfig = {
+  dashboard: { title: 'Dashboard', actions: '' },
+  leads: { title: 'Leads', actions: '<button class="btn btn-secondary btn-sm" onclick="exportLeads()">⬇ Export CSV</button>' },
+  products: { title: 'Products', actions: '<button class="btn btn-primary btn-sm" onclick="openProductModal()">+ Add Product</button>' },
+  whatsapp: { title: 'WhatsApp Setup', actions: '' },
+  'ai-test': { title: 'Test AI Assistant', actions: '' },
+  settings: { title: 'Settings', actions: '' },
+};
+
+function nav(page) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el => {
+    if (el.getAttribute('onclick') && el.getAttribute('onclick').includes("'"+page+"'")) el.classList.add('active');
+  });
+  const cfg = pageConfig[page] || { title: page, actions: '' };
+  document.getElementById('topbar-title').textContent = cfg.title;
+  document.getElementById('topbar-actions').innerHTML = cfg.actions;
+  currentPage = page;
+}
+
+// ══════════════════════════════════════════════
+//  DASHBOARD
+// ══════════════════════════════════════════════
+function renderDashboard() {
+  const leads = state.leads;
+  const qualified = leads.filter(l => l.status === 'qualified').length;
+  const total = leads.length;
+  const conversion = total ? Math.round((qualified/total)*100) : 0;
+  const products = state.products.length;
+
+  document.getElementById('stat-qualified').textContent = qualified;
+  document.getElementById('stat-inquiries').textContent = total;
+  document.getElementById('stat-conversion').textContent = conversion + '%';
+  document.getElementById('stat-products').textContent = products;
+  document.getElementById('nav-leads-count').textContent = total;
+
+  // Chart bars
+  const days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const inquiryData = [4,7,5,9,6,3,8];
+  const qualData = [2,4,3,6,4,2,5];
+  const maxVal = Math.max(...inquiryData);
+  const chartEl = document.getElementById('leads-chart');
+  chartEl.innerHTML = days.map((d,i) => `
+    <div class="bar-group">
+      <div class="bar-value">${inquiryData[i]}</div>
+      <div style="display:flex;gap:3px;align-items:flex-end;flex:1;width:100%">
+        <div class="bar" style="height:${(inquiryData[i]/maxVal)*100}%;background:var(--accent);opacity:0.85;flex:1"></div>
+        <div class="bar" style="height:${(qualData[i]/maxVal)*100}%;background:var(--blue);opacity:0.85;flex:1"></div>
+      </div>
+      <div class="bar-label">${d}</div>
+    </div>
+  `).join('');
+
+  // Recent chats
+  const chatsEl = document.getElementById('recent-chats');
+  const recent = leads.slice(0,3);
+  if (!recent.length) { chatsEl.innerHTML = '<div style="text-align:center;color:var(--text3);padding:20px;font-size:13px">No conversations yet</div>'; return; }
+  chatsEl.innerHTML = recent.map(l => `
+    <div class="activity-item">
+      <div class="activity-dot" style="background:${l.status==='qualified'?'var(--accent)':l.status==='cold'?'var(--red)':'var(--blue)'}"></div>
+      <div style="flex:1;min-width:0">
+        <div class="activity-text"><strong>${l.phone}</strong></div>
+        <div style="font-size:12px;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${l.inquiry}</div>
+        <div class="activity-time">${l.date}</div>
+      </div>
+      <span class="badge badge-${l.status==='qualified'?'green':l.status==='cold'?'red':'blue'}">${l.status}</span>
+    </div>
+  `).join('');
+
+  // Dashboard leads table
+  const tableEl = document.getElementById('dashboard-leads-table');
+  tableEl.innerHTML = leads.slice(0,5).map(l => `
+    <tr>
+      <td class="lead-phone">${l.phone}</td>
+      <td class="lead-msg">${l.inquiry}</td>
+      <td><span class="badge badge-${l.status==='qualified'?'green':l.status==='cold'?'red':'blue'}">${l.status}</span></td>
+      <td style="color:var(--text3);font-size:12px">${l.date.split(' ')[1]}</td>
+    </tr>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════
+//  LEADS
+// ══════════════════════════════════════════════
+function renderLeads() {
+  const filter = document.getElementById('leads-filter')?.value || 'all';
+  const filtered = filter==='all' ? state.leads : state.leads.filter(l => l.status===filter);
+  const tableEl = document.getElementById('leads-table');
+  if (!filtered.length) {
+    tableEl.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:30px">No leads found</td></tr>`;
+    return;
+  }
+  tableEl.innerHTML = filtered.map((l,i) => `
+    <tr>
+      <td style="color:var(--text3)">#${l.id}</td>
+      <td class="lead-phone">${l.phone}</td>
+      <td class="lead-msg" title="${l.inquiry}">${l.inquiry}</td>
+      <td class="lead-ai" title="${l.ai_reply}">${l.ai_reply}</td>
+      <td><span class="badge badge-${l.status==='qualified'?'green':l.status==='cold'?'red':'blue'}">${l.status}</span></td>
+      <td style="font-size:12px;color:var(--text2)">${l.date}</td>
+      <td>
+        <button class="btn btn-secondary btn-sm" onclick="viewLead(${l.id})">View</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function viewLead(id) {
+  const l = state.leads.find(x => x.id === id);
+  if (!l) return;
+  document.getElementById('lead-detail-content').innerHTML = `
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Customer</div>
+      <div style="font-size:16px;font-weight:600">${l.phone}</div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Status</div>
+      <span class="badge badge-${l.status==='qualified'?'green':l.status==='cold'?'red':'blue'}">${l.status}</span>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px">Customer Inquiry</div>
+      <div style="background:var(--bg3);border-radius:var(--radius);padding:14px;font-size:14px;line-height:1.6">${l.inquiry}</div>
+    </div>
+    <div style="margin-bottom:16px">
+      <div style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px">AI Reply</div>
+      <div style="background:#0a1a0f;border-radius:var(--radius);padding:14px;font-size:14px;line-height:1.6;color:var(--accent)">${l.ai_reply}</div>
+    </div>
+    <div style="font-size:12px;color:var(--text3)">Received: ${l.date}</div>
+    <div style="display:flex;gap:10px;margin-top:20px">
+      <select onchange="updateLeadStatus(${l.id}, this.value)" style="flex:1">
+        <option value="inquiry" ${l.status==='inquiry'?'selected':''}>Inquiry</option>
+        <option value="qualified" ${l.status==='qualified'?'selected':''}>Qualified</option>
+        <option value="cold" ${l.status==='cold'?'selected':''}>Cold</option>
+      </select>
+      <button class="btn btn-danger btn-sm" onclick="deleteLead(${l.id})">Delete</button>
+    </div>
+  `;
+  document.getElementById('lead-modal').classList.add('open');
+}
+
+function updateLeadStatus(id, status) {
+  const l = state.leads.find(x => x.id === id);
+  if (l) { l.status = status; renderLeads(); renderDashboard(); showToast('Lead status updated','✅'); }
+}
+
+function deleteLead(id) {
+  state.leads = state.leads.filter(x => x.id !== id);
+  closeLeadModal(); renderLeads(); renderDashboard();
+  showToast('Lead deleted','🗑️');
+}
+
+function closeLeadModal() { document.getElementById('lead-modal').classList.remove('open'); }
+
+function exportLeads() { showToast('CSV export — calls GET /api/leads/export on backend','📥'); }
+
+// ══════════════════════════════════════════════
+//  PRODUCTS
+// ══════════════════════════════════════════════
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  const empty = document.getElementById('products-empty');
+  if (!state.products.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  grid.innerHTML = state.products.map(p => `
+    <div class="product-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px">
+        <div class="product-name">${p.name}</div>
+        <span class="badge badge-green">${p.status}</span>
+      </div>
+      <div class="product-price">${p.price}</div>
+      <div class="product-desc">${p.description}</div>
+      <div class="product-meta">
+        <div class="product-meta-item"><strong>MOQ:</strong> ${p.moq}</div>
+        <div class="product-meta-item"><strong>Delivery:</strong> ${p.delivery}</div>
+      </div>
+      <div class="product-actions">
+        <button class="btn btn-secondary btn-sm" style="flex:1" onclick="editProduct(${p.id})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteProduct(${p.id})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openProductModal(id) {
+  editingProductId = id || null;
+  document.getElementById('product-modal-title').textContent = id ? 'Edit Product' : 'Add Product';
+  if (id) {
+    const p = state.products.find(x => x.id === id);
+    document.getElementById('prod-name').value = p.name;
+    document.getElementById('prod-price').value = p.price;
+    document.getElementById('prod-moq').value = p.moq;
+    document.getElementById('prod-desc').value = p.description;
+    document.getElementById('prod-delivery').value = p.delivery;
+  } else {
+    ['prod-name','prod-price','prod-moq','prod-desc','prod-delivery'].forEach(id => document.getElementById(id).value = '');
+  }
+  document.getElementById('product-modal').classList.add('open');
+}
+
+function editProduct(id) { openProductModal(id); }
+
+function saveProduct() {
+  const name = document.getElementById('prod-name').value.trim();
+  const price = document.getElementById('prod-price').value.trim();
+  const moq = document.getElementById('prod-moq').value.trim();
+  const desc = document.getElementById('prod-desc').value.trim();
+  const delivery = document.getElementById('prod-delivery').value.trim();
+  if (!name || !price) { showToast('Name and price are required','⚠️'); return; }
+  if (editingProductId) {
+    const p = state.products.find(x => x.id === editingProductId);
+    Object.assign(p, { name, price, moq, description: desc, delivery });
+    showToast('Product updated','✅');
+  } else {
+    const newId = Math.max(0, ...state.products.map(p => p.id)) + 1;
+    state.products.push({ id: newId, name, price, moq, description: desc, delivery, status: 'active' });
+    showToast('Product added','✅');
+  }
+  closeProductModal(); renderProducts(); renderAITestProducts(); renderDashboard();
+}
+
+function deleteProduct(id) {
+  state.products = state.products.filter(x => x.id !== id);
+  renderProducts(); renderAITestProducts(); renderDashboard();
+  showToast('Product deleted','🗑️');
+}
+
+function closeProductModal() { document.getElementById('product-modal').classList.remove('open'); }
+
+// ══════════════════════════════════════════════
+//  AI TEST
+// ══════════════════════════════════════════════
+function renderAITestProducts() {
+  const el = document.getElementById('ai-test-products');
+  if (!state.products.length) { el.innerHTML = '<div style="color:var(--text3);font-size:13px;text-align:center;padding:20px">No products added yet</div>'; return; }
+  el.innerHTML = state.products.map(p => `
+    <div style="background:var(--bg3);border-radius:var(--radius);padding:14px;margin-bottom:10px;border-left:3px solid var(--accent)">
+      <div style="font-weight:600;font-size:13px;margin-bottom:4px">${p.name}</div>
+      <div style="font-size:12px;color:var(--text2)">${p.price} · MOQ: ${p.moq}</div>
+      <div style="font-size:12px;color:var(--text3);margin-top:4px">${p.description.substring(0,80)}…</div>
+    </div>
+  `).join('');
+}
+
+function testAI() {
+  const msg = document.getElementById('test-message').value.trim();
+  if (!msg) { showToast('Enter a customer message to test','⚠️'); return; }
+  const btn = document.getElementById('test-ai-btn');
+  btn.innerHTML = '<div class="spinner"></div> Generating...';
+  btn.disabled = true;
+
+  // Build a catalog-aware reply (simulated — replace with real API call)
+  setTimeout(() => {
+    const catalog = state.products.map(p => `• ${p.name}: ${p.price}, MOQ ${p.moq}, ${p.delivery}`).join('\n');
+    const msgLower = msg.toLowerCase();
+    let reply = '';
+    let status = 'inquiry';
+    let matched = [];
+
+    state.products.forEach(p => {
+      if (msgLower.includes(p.name.split(' ').slice(0,2).join(' ').toLowerCase()) ||
+          msgLower.includes('fabric') || msgLower.includes('silk') || msgLower.includes('cotton') || msgLower.includes('bulk') || msgLower.includes('price') || msgLower.includes('moq')) {
+        matched.push(p.name);
+      }
+    });
+
+    if (matched.length) {
+      const prod = state.products.find(p => matched.includes(p.name));
+      reply = `Hello! I'm ${document.getElementById('ai-name').value || 'Zara'}, your dedicated sales assistant 😊\n\nThank you for your interest! Based on your inquiry:\n\n${catalog}\n\nFor ${prod.name} specifically: ${prod.description}\n\nWould you like me to prepare a detailed quotation? Please share your required quantity and shipping destination.`;
+      status = 'qualified';
+    } else {
+      reply = `Hello! I'm ${document.getElementById('ai-name').value || 'Zara'}, your AI sales assistant 😊\n\nThank you for reaching out! We offer the following products:\n\n${catalog}\n\nHow can I help you today? Please let me know what you're looking for.`;
+      status = 'inquiry';
+    }
+
+    document.getElementById('test-output-text').textContent = reply;
+    document.getElementById('test-status-badge').textContent = status === 'qualified' ? '✓ Qualified' : '○ Inquiry';
+    document.getElementById('test-status-badge').className = 'badge badge-' + (status==='qualified'?'green':'blue');
+    document.getElementById('test-matched-products').textContent = matched.length ? `Matched: ${matched.join(', ')}` : 'No specific product matched';
+    document.getElementById('test-output-panel').style.display = 'block';
+
+    btn.innerHTML = '🤖 Generate AI Response';
+    btn.disabled = false;
+  }, 1400);
+}
+
+// ══════════════════════════════════════════════
+//  WHATSAPP
+// ══════════════════════════════════════════════
+let waConnected = true;
+function toggleWaStatus() {
+  waConnected = !waConnected;
+  const el = document.getElementById('wa-connection-status');
+  el.className = 'wa-status ' + (waConnected ? 'connected' : 'disconnected');
+  el.innerHTML = `<div class="wa-dot"></div> ${waConnected ? 'Connected' : 'Disconnected'}`;
+}
+function saveWhatsApp() { showToast('WhatsApp settings saved → POST /save-whatsapp','✅'); }
+function testConnection() { showToast('Testing connection... → POST /api/whatsapp/test','🔄'); }
+
+// ══════════════════════════════════════════════
+//  SETTINGS
+// ══════════════════════════════════════════════
+function loadSettings() {
+  if (!currentUser) return;
+  document.getElementById('set-fname').value = currentUser.firstName || '';
+  document.getElementById('set-lname').value = currentUser.lastName || '';
+  document.getElementById('set-company').value = currentUser.company || '';
+  document.getElementById('set-email').value = currentUser.email || '';
+}
+
+function saveProfile() {
+  currentUser.firstName = document.getElementById('set-fname').value;
+  currentUser.lastName = document.getElementById('set-lname').value;
+  currentUser.company = document.getElementById('set-company').value;
+  updateUserUI();
+  showToast('Profile saved → PUT /api/user','✅');
+}
+
+// ══════════════════════════════════════════════
+//  TOAST
+// ══════════════════════════════════════════════
+let toastTimer;
+function showToast(msg, icon) {
+  document.getElementById('toast-msg').textContent = msg;
+  document.getElementById('toast-icon').textContent = icon || '✅';
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// Close modals on overlay click
+document.getElementById('product-modal').addEventListener('click', function(e){ if(e.target===this) closeProductModal(); });
+document.getElementById('lead-modal').addEventListener('click', function(e){ if(e.target===this) closeLeadModal(); });
+</script>
+</body>
+</html>
